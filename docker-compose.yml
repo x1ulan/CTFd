@@ -92,6 +92,7 @@ networks:
   frp_connect:
     driver: overlay
     internal: true
+    attachable: true
     ipam:
       config:
         - subnet: 172.1.0.0/16
