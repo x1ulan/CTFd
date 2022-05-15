@@ -1,3 +1,66 @@
+# 3.5.0 / 2022-05-09
+
+**General**
+
+- Add a next challenge recommendation to challenges
+- Add support for only viewing hints after unlocking another hint
+- Add size checking and recommendation for images uploaded during setup
+
+**Admin Panel**
+
+- Imports now happen in the background so that admins can watch the status of the import
+  - Add progress tracking to backup/export importing
+  - Add `GET /admin/import` to see status of import
+  - The public user facing portion of CTFd is now disabled during imports
+- Fix issue where custom field entries for Users and Teams would be misaligned in the scoreboard CSV export
+- Show admins the email server error message when email sending fails
+- Fix issue where the current theme cannot be found in list of themes
+- Fix page preview so that it accounts for the provided format
+- Add links from User/Team Profile IP addresses to a User IP address search page
+- Add city geolocation to Team Profile IP addresses
+
+**API**
+
+- Add the `count` meta field to the following endpoints:
+  - `/api/v1/users/me/solves`
+  - `/api/v1/users/me/fails`
+  - `/api/v1/users/me/awards`
+  - `/api/v1/teams/me/awards`
+  - `/api/v1/users/[user_id]/solves`
+  - `/api/v1/users/[user_id]/fails`
+  - `/api/v1/users/[user_id]/awards`
+  - `/api/v1/teams/[team_id]/solves`
+  - `/api/v1/teams/[team_id]/awards`
+- Improve speed of `/api/v1/teams/me/fails`
+- Improve speed of `/api/v1/teams/[team_id]/fails`
+- Improve speed of `/api/v1/users/me/fails`
+- Improve speed of `/api/v1/users/[user_id]/fails`
+
+**Deployment**
+
+- Use Python 3.9 as the default Python version
+- Prevent any possible usage of an already existing session ID by checking for duplicates during during session ID generation
+- No longer install `python3-dev` in Dockerfile
+- docker-compose.yml now uses `nginx:stable` as the image for nginx
+
+**Plugins**
+
+- `CTFd._internal.challenge.render` and `CTFd._internal.challenge.renderer` in the `view.js` Challenge type file has been deprecated. Instead Challenge plugins should refer to the `challenge.html` attribute provided by the API. Essentially CTFd is moving to having markdown & HTML rendered by the server instead of rendering on the client.
+
+**Themes**
+
+- Create the [`core-beta` theme](https://github.com/CTFd/core-beta) and begin documenting the creation of themes using Vite
+- Add `userName` and `userEmail` to the CTFd init object in `base.html` for easier integration with other JavaScript code
+- Add `teamId` and `teamName` to the CTFd init object in `base.html` for easier integration with other JavaScript code
+- Adds the `Assets` constant to access front end assets from Jinja templates
+- Adds a `views.themes_beta` route to avoid the `.dev`/`.min` extension being added automatically to frontend asset urls
+
+**Miscellaneous**
+
+- Fix double logging in `log()` function
+- Add `--delete_import_on_finish` to `python manage.py import_ctf`
+- Fix issue where `field_entries` table could not be imported when moving between MySQL and MariaDB
+
 # 3.4.3 / 2022-03-07
 
 **Security**
