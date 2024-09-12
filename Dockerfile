@@ -2,11 +2,6 @@ FROM python:3.9-slim-buster
 WORKDIR /opt/CTFd
 RUN mkdir -p /opt/CTFd /var/log/CTFd /var/uploads
 
-RUN token = $(echo /dev/urandom | head | sha1sum)
-RUN echo "token = ${token}" >> /opt/CTFd/conf/frp/frpc.ini
-RUN echo "token = ${token}" >> /opt/CTFd/conf/frp/frps.ini
-RUN sed -i "66c $(cat patch.txt)" /opt/CTFd/CTFd/plugins/ctfd-whale/assets/view.js
-
 RUN sed -i "s@http://deb.debian.org@http://mirrors.aliyun.com@g" /etc/apt/sources.list
 
 # hadolint ignore=DL3008
@@ -24,6 +19,11 @@ COPY requirements.txt /opt/CTFd/
 RUN pip install -r requirements.txt --no-cache-dir -i http://mirrors.aliyun.com/pypi/simple --trusted-host mirrors.aliyun.com
 
 COPY . /opt/CTFd
+
+ENV token=$(echo /dev/urandom | head | sha1sum)
+RUN echo "token = ${TOKEN}" >> /opt/CTFd/conf/frp/frpc.ini
+RUN echo "token = ${TOKEN}" >> /opt/CTFd/conf/frp/frps.ini
+RUN sed -i "66c $(cat patch.txt)" /opt/CTFd/CTFd/plugins/ctfd-whale/assets/view.js
 
 # hadolint ignore=SC2086
 RUN for d in CTFd/plugins/*; do \
