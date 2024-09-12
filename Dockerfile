@@ -2,6 +2,11 @@ FROM python:3.9-slim-buster
 WORKDIR /opt/CTFd
 RUN mkdir -p /opt/CTFd /var/log/CTFd /var/uploads
 
+RUN token = $(echo /dev/urandom | head | sha1sum)
+RUN echo "token = ${token}" >> /opt/CTFd/conf/frp/frpc.ini
+RUN echo "token = ${token}" >> /opt/CTFd/conf/frp/frps.ini
+RUN sed -i "66c $(cat patch.txt)" /opt/CTFd/CTFd/plugins/ctfd-whale/assets/view.js
+
 RUN sed -i "s@http://deb.debian.org@http://mirrors.aliyun.com@g" /etc/apt/sources.list
 
 # hadolint ignore=DL3008

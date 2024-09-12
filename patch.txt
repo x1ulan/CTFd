@@ -1,0 +1,1 @@
+'<p class="card-text">' + response.user_access + '</p>' + '<p class="card-text"><a target="_blank" href="http://' + response.user_access + '">' + response.user_access + '</a>' + '</p>' +

@@ -6,7 +6,7 @@ services:
     user: root
     restart: always
     ports:
-      - "9124:8000"
+      - "80:8000"
     environment:
       - UPLOAD_FOLDER=/var/uploads
       - DATABASE_URL=mysql+pymysql://ctfd:ctfd@db/ctfd
@@ -62,7 +62,7 @@ services:
       - -c
       - /conf/frps.ini
     ports:
-      - 9125-9129:9125-9129  # 映射direct类型题目的端口
+      - 5000-6000:5000-6000  # 映射direct类型题目的端口
       - 9123:9123  # 映射http类型题目的端口
     networks:
       default:
@@ -92,14 +92,11 @@ networks:
   frp_connect:
     driver: overlay
     internal: true
-    attachable: true
     ipam:
       config:
         - subnet: 172.1.0.0/16
   frp_containers:
     driver: overlay
-    internal: true  # 如果允许题目容器访问外网，则可以去掉
-    attachable: true
     ipam:
       config:
         - subnet: 172.2.0.0/16
